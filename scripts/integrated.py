@@ -4,7 +4,7 @@ from detection import detect_bbox
 import cv2
 
 
-INPUT_IMG_PATH = "../resource/train_img2.jpg"
+INPUT_IMG_PATH = "../resource/test_car_x60cm.png"
 
 
 # returns center point of the bottom bounding box edge

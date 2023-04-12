@@ -37,14 +37,14 @@ def postprocess(result):
 def detect_bbox(image):
     
     avgTime = 0.0
-    for i in range(100):
+    for i in range(1):
         with get_engine(ONNX_FILE_PATH , ENGINE_FILE_PATH) as engine, engine.create_execution_context() as context:
 
         
             inputs, outputs, bindings, stream = common.allocate_buffers(engine)
 
             # Do inference
-            print("Running inference on image {}...".format(input_image_path))
+            #print("Running inference on image {}...".format(input_image_path))
 
             # Set host input to the image. The common.do_inference function will copy the input to the GPU before executing.
             inputs[0].host = np.array(preprocess(image), dtype=np.float32, order='C')   # np.float16 for FP.16
