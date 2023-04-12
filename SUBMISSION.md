@@ -10,7 +10,7 @@ y = -0.1265m
 ![Lane Detection](imgs/lane_final.png)
 
 ## Integrated Object Detection + Distance Calculation Result Image
-![Camera Detection][imgs/fp32_detection.png]
+![Camera Detection](imgs/fp32_detection.png)
 x_car = 0.4695m, y_car = -0.065m
 
 ## Nerual Network Training & Testing Loss Plot
