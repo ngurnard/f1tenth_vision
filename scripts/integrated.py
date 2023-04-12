@@ -4,7 +4,7 @@ from detection import detect_bbox
 import cv2
 
 
-INPUT_IMG_PATH = "../imgs/input_img.png"
+INPUT_IMG_PATH = "../resource/test_car_x60cm.png"
 
 
 # returns center point of the bottom bounding box edge
@@ -23,6 +23,6 @@ if __name__=="__main__":
     print(bbox)
     # call get_bottom on bbox -> (u,v)
     u, v = get_bottom(bbox)
-
+    print(u, v)
     # call distance on (u,v) -> (x, y)
     x_car, y_car = calc_distance(u, v)

@@ -42,20 +42,21 @@ def calc_distance(u, v):
     # Calibration
     ret, intrinsic_mat, distortion_coeff, rotation_vec, translation_vec = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
 
-    print("Intrinsic matrix:")
-    print(intrinsic_mat)
+    # print("Intrinsic matrix:")
+    # print(intrinsic_mat)
     # print("Image Size:", gray.shape[::-1])
 
     # TODO - calc distance
     cam_coords = np.linalg.inv(intrinsic_mat) @ np.array([u, v, 1]).reshape(3,1)
-
+    print("Cam coords: ", cam_coords)
     R = np.array([  [ 0, -1,  0],
                     [ 0,  0, -1],
                     [ 1,  0,  0]])
     h = 0.22
-    T = np.array([0, 0, -h])
+    T = np.array([0, h, 0]).reshape(3,1)
 
     car_coords = np.linalg.inv(R) @ (cam_coords - T)
+    print("Car coords: ", car_coords)
     x_car, y_car = car_coords[0], car_coords[1]
     print(x_car, y_car)
     
