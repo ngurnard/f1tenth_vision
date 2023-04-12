@@ -8,8 +8,8 @@ from convert_trt import get_engine
 from utils import voting_suppression, bbox_convert_r, label_to_box_xyxy, DisplayLabel
 
 
-ONNX_FILE_PATH = "../models/hot_wheels_model.onnx"
-ENGINE_FILE_PATH = "../models/hot_wheels_model.trt"
+ONNX_FILE_PATH = "../models/hot_wheels_model_130.onnx"
+ENGINE_FILE_PATH = "../models/hot_wheels_model_130.trt"
 
 def preprocess(image):
  
@@ -36,19 +36,26 @@ def postprocess(result):
 
 def detect_bbox(image):
     
-    with get_engine(ONNX_FILE_PATH , ENGINE_FILE_PATH) as engine, engine.create_execution_context() as context:
-        inputs, outputs, bindings, stream = common.allocate_buffers(engine)
+    avgTime = 0.0
+    for i in range(100):
+	with get_engine(ONNX_FILE_PATH , ENGINE_FILE_PATH) as engine, engine.create_execution_context() as context:
+		inputs, outputs, bindings, stream = common.allocate_buffers(engine)
 
-        # Do inference
-        # print("Running inference on image {}...".format(input_image_path))
+		# Do inference
+		# print("Running inference on image {}...".format(input_image_path))
 
-        # Set host input to the image. The common.do_inference function will copy the input to the GPU before executing.
-        inputs[0].host = np.array(preprocess(image), dtype=np.float32, order='C')   # np.float16 for FP.16
-        start = time.time()
-        trt_outputs = common.do_inference_v2(context, bindings=bindings, inputs=inputs, outputs=outputs, stream=stream)
-        end = time.time()
-        dt = end - start
-        print("Time:", dt)
+		# Set host input to the image. The common.do_inference function will copy the input to the GPU before executing.
+		inputs[0].host = np.array(preprocess(image), dtype=np.float32, order='C')   # np.float16 for FP.16
+		
+		
+		start = time.time()
+		trt_outputs = common.do_inference_v2(context, bindings=bindings, inputs=inputs, outputs=outputs, stream=stream)
+		end = time.time()
+		dt = end - start
+		avgTime += dt
+		print(i, ": ", dt)
+    avgTime /= 100.0
+    print("Avg Time:", avgTime)
 
     # post processing
     result = np.reshape(trt_outputs, (5, 5, 10))
