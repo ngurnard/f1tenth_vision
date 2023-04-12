@@ -24,7 +24,6 @@ def preprocess(image):
 def postprocess(result):
     voting_iou_threshold = 0.5
     confi_threshold = 0.4
-    result = result.detach().cpu().numpy()
     bboxs, result_prob = label_to_box_xyxy(result, confi_threshold)
     vote_rank = voting_suppression(bboxs, voting_iou_threshold)
     bbox = bboxs[vote_rank[0]]

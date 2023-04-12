@@ -9,7 +9,7 @@ INPUT_IMG_PATH = "../imgs/input_img.png"
 
 # returns center point of the bottom bounding box edge
 def get_bottom(bbox):
-    cx, cy, _, h = bbox # i think there will be an error here
+    cx, cy, h = bbox[0], bbox[1], bbox[3] # i think there will be an error here
     return cx, cy + h/2   
 
 
