@@ -75,7 +75,7 @@ def DisplayLabel(img, bboxs):
     # fig, ax = plt.subplots(1, figsize=(6, 8))
     image = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
     fig, ax = plt.subplots(1)
-    edgecolor = [1, 0, 0]
+    edgecolor = [0, 1, 0]
     if len(bboxs) == 1:
         bbox = bboxs[0]
         ax.add_patch(patches.Rectangle((bbox[0] - bbox[2]/2, bbox[1] - bbox[3]/2), bbox[2], bbox[3], linewidth=1, edgecolor=edgecolor, facecolor='none'))
