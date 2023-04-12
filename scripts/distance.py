@@ -162,7 +162,7 @@ if __name__=='__main__':
 
     # To get distance if u and v is knownn
     # '''
-    u, v = 674, 414
+    u, v = 672, 418
     calc_distance(u,v)
     # '''
     
