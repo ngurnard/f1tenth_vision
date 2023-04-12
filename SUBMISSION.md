@@ -22,3 +22,5 @@ FP16 inference time (ms): 1.61s
 FP32 inference time (ms): 1.6583s
 
 You should time only the inference part and average out at least 100 inference cycles.
+
+Lower precision floating point formats such as FP16 (in comparison to FP32) require less memory, enabling the training and deployment of larger neural networks. Additionally, they require less memory bandwidth which speeds up data transfer operations. Finally, math operations run much faster in reduced precision, especially on GPUs with Tensor Core support for that precision
