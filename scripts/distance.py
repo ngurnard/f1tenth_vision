@@ -162,7 +162,7 @@ if __name__=='__main__':
 
     # To get distance if u and v is knownn
     # '''
-    u, v = 672, 418
+    u, v = 597, 417
     calc_distance(u,v)
     # '''
     
@@ -174,7 +174,7 @@ if __name__=='__main__':
 
     # To get camera coordinates [u, v] from image
     '''
-    img = cv2.imread('../resource/test_car_x60cm.png', 1)
+    img = cv2.imread('../resource/cone_unknown.png', 1)
   
     # displaying the image
     cv2.imshow('image', img)
