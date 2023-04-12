@@ -43,7 +43,7 @@ def detect_bbox(image):
         # print("Running inference on image {}...".format(input_image_path))
 
         # Set host input to the image. The common.do_inference function will copy the input to the GPU before executing.
-        inputs[0].host = np.array(preprocess(image).numpy(), dtype=np.float32, order='C')   # np.float16 for FP.16
+        inputs[0].host = np.array(preprocess(image), dtype=np.float32, order='C')   # np.float16 for FP.16
         start = time.time()
         trt_outputs = common.do_inference_v2(context, bindings=bindings, inputs=inputs, outputs=outputs, stream=stream)
         end = time.time()
