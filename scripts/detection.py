@@ -55,7 +55,8 @@ def detect_bbox(image):
     bbox = postprocess(result)
     print("bbox shape:", bbox.shape)
 
-    DisplayLabel(image, bbox)
+    img_pre = cv2.resize(image, (180, 320), interpolation=cv2.INTER_NEAREST)
+    DisplayLabel(img_pre, bbox)
 
     return bbox
 
