@@ -5,7 +5,7 @@ import cv2
 import time
 import common
 from convert_trt import get_engine
-from utils import voting_suppression, bbox_convert_r, label_to_box_xyxy
+from utils import voting_suppression, bbox_convert_r, label_to_box_xyxy, DisplayLabel
 
 
 ONNX_FILE_PATH = "../models/hot_wheels_model.onnx"
@@ -30,6 +30,7 @@ def postprocess(result):
     [c_x, c_y, w, h] = bbox_convert_r(bbox[0], bbox[1], bbox[2], bbox[3])
     bboxs_2 = np.array([[c_x, c_y, w, h]])
 
+
     return bboxs_2
 
 
@@ -53,6 +54,8 @@ def detect_bbox(image):
     result = np.reshape(trt_outputs, (5, 5, 10))
     bbox = postprocess(result)
     print("bbox shape:", bbox.shape)
+
+    DisplayLabel(image, bbox)
 
     return bbox
 

@@ -1,4 +1,7 @@
 import numpy as np
+import cv2
+import matplotlib.patches as patches
+import matplotlib.pyplot as plt
 
 
 final_dim = [5, 10]
@@ -65,3 +68,20 @@ def voting_suppression(result_box, iou_threshold = 0.5):
             if IoU(box_validation, box) > iou_threshold:
                 votes[ind] += 1
     return (-votes).argsort()
+
+
+def DisplayLabel(img, bboxs):
+    # image = np.transpose(image.copy(), (1, 2, 0))
+    # fig, ax = plt.subplots(1, figsize=(6, 8))
+    image = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
+    fig, ax = plt.subplots(1)
+    edgecolor = [1, 0, 0]
+    if len(bboxs) == 1:
+        bbox = bboxs[0]
+        ax.add_patch(patches.Rectangle((bbox[0] - bbox[2]/2, bbox[1] - bbox[3]/2), bbox[2], bbox[3], linewidth=1, edgecolor=edgecolor, facecolor='none'))
+    elif len(bboxs) > 1:
+        for bbox in bboxs:
+            ax.add_patch(patches.Rectangle((bbox[0] - bbox[2]/2, bbox[1] - bbox[3]/2), bbox[2], bbox[3], linewidth=1, edgecolor=edgecolor, facecolor='none'))
+    ax.imshow(image)
+    plt.savefig("../imgs/detection_final.png")
+    plt.show()
