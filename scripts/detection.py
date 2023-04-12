@@ -38,22 +38,23 @@ def detect_bbox(image):
     
     avgTime = 0.0
     for i in range(100):
-	with get_engine(ONNX_FILE_PATH , ENGINE_FILE_PATH) as engine, engine.create_execution_context() as context:
-		inputs, outputs, bindings, stream = common.allocate_buffers(engine)
+        with get_engine(ONNX_FILE_PATH , ENGINE_FILE_PATH) as engine, engine.create_execution_context() as context:
 
-		# Do inference
-		# print("Running inference on image {}...".format(input_image_path))
+        
+            inputs, outputs, bindings, stream = common.allocate_buffers(engine)
 
-		# Set host input to the image. The common.do_inference function will copy the input to the GPU before executing.
-		inputs[0].host = np.array(preprocess(image), dtype=np.float32, order='C')   # np.float16 for FP.16
-		
-		
-		start = time.time()
-		trt_outputs = common.do_inference_v2(context, bindings=bindings, inputs=inputs, outputs=outputs, stream=stream)
-		end = time.time()
-		dt = end - start
-		avgTime += dt
-		print(i, ": ", dt)
+            # Do inference
+            print("Running inference on image {}...".format(input_image_path))
+
+            # Set host input to the image. The common.do_inference function will copy the input to the GPU before executing.
+            inputs[0].host = np.array(preprocess(image), dtype=np.float32, order='C')   # np.float16 for FP.16
+            start = time.time()
+            trt_outputs = common.do_inference_v2(context, bindings=bindings, inputs=inputs, outputs=outputs, stream=stream)
+            end = time.time()
+            dt = end - start
+            avgTime += dt
+            print(i, ": ", dt)
+
     avgTime /= 100.0
     print("Avg Time:", avgTime)
 
