@@ -55,7 +55,7 @@ def detect_bbox(image):
             avgTime += dt
             print(i, ": ", dt)
 
-    avgTime /= 100.0
+    avgTime /= 1.0
     print("Avg Time:", avgTime)
 
     # post processing

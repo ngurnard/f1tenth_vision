@@ -85,6 +85,9 @@ def get_engine(onnx_file_path, engine_file_path=""):
         # ) as runtime:
         config.max_workspace_size = 1 << 28  # 256MiB
         builder.max_batch_size = 1
+        # if config.use_fp16:
+        # 	builder_config.set_flag(trt.BuilderFlag.FP16)
+        
         # Parse model file
         if not os.path.exists(onnx_file_path):
             print(
