@@ -1,6 +1,10 @@
 from distance import calc_distance
 from lane import detect_lane_markers
 from detection import detect_bbox
+import cv2
+
+
+INPUT_IMG_PATH = "../imgs/input_img.png"
 
 
 # returns center point of the bottom bounding box edge
@@ -12,17 +16,13 @@ def get_bottom(bbox):
 if __name__=="__main__":
 
     # get img path
-    input_image = None
-    img_path = None
+    input_image = cv2.imread(INPUT_IMG_PATH)
 
-    # call lane
-    lane_img = detect_lane_markers(input_image)
-    
     # call detect_bbox - bbox
-    bbox = detect_bbox(img_path)
+    bbox = detect_bbox(input_image)
 
     # call get_bottom on bbox -> (u,v)
-    v, u = get_bottom(bbox)
+    u, v = get_bottom(bbox)
 
     # call distance on (u,v) -> (x, y)
     x_car, y_car = calc_distance(u, v)
