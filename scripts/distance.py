@@ -35,9 +35,9 @@ def calc_distance(u, v):
             imgpoints.append(corners)
             
             # Draw and display the corners
-            img = cv2.drawChessboardCorners(img, CHECKERBOARD_SIZE, corners, ret)
-            cv2.imshow("Calibration", img)
-            cv2.waitKey(500)
+            # img = cv2.drawChessboardCorners(img, CHECKERBOARD_SIZE, corners, ret)
+            # cv2.imshow("Calibration", img)
+            # cv2.waitKey(500)
 
     # Calibration
     ret, intrinsic_mat, distortion_coeff, rotation_vec, translation_vec = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
@@ -52,11 +52,13 @@ def calc_distance(u, v):
     R = np.array([  [ 0, -1,  0],
                     [ 0,  0, -1],
                     [ 1,  0,  0]])
-    h = 0.22
+    h = get_camera_h()
+    print("h: ", h, "m")
     T = np.array([0, h, 0]).reshape(3,1)
-
-    car_coords = np.linalg.inv(R) @ (cam_coords - T)
+    l = h / cam_coords[1]
+    car_coords = np.linalg.inv(R) @ (l*cam_coords - T)
     print("Car coords: ", car_coords)
+    print("Lambda: ", l)
     x_car, y_car = car_coords[0], car_coords[1]
     print(x_car, y_car)
     
@@ -93,9 +95,9 @@ def get_camera_h():
             imgpoints.append(corners)
             
             # Draw and display the corners
-            img = cv2.drawChessboardCorners(img, CHECKERBOARD_SIZE, corners, ret)
-            cv2.imshow("Calibration", img)
-            cv2.waitKey(500)
+            # img = cv2.drawChessboardCorners(img, CHECKERBOARD_SIZE, corners, ret)
+            # cv2.imshow("Calibration", img)
+            # cv2.waitKey(500)
 
     # Calibration
     ret, intrinsic_mat, distortion_coeff, rotation_vec, translation_vec = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
@@ -105,13 +107,16 @@ def get_camera_h():
     u, v = 664, 493 # Need to get from the image after clicking 
 
     cam_coords = np.linalg.inv(intrinsic_mat) @ np.array([u, v, 1]).reshape(3,1)
+    R = np.array([  [ 0, -1,  0],
+                [ 0,  0, -1],
+                [ 1,  0,  0]])
+    car_coords = np.array([0.4, 0 , 0]).reshape(3,1) # Ground truth d = 40cm
 
-    d = 0.40 # Ground truth distance
-
-    print("cam_coords:", cam_coords)
-    print(np.linalg.norm(cam_coords[:2])**2 - d**2)
-
-    h = np.sqrt(np.linalg.norm(cam_coords[:2])**2 - d**2)
+    save = R @ car_coords
+    T = cam_coords - (R @ car_coords)/save[-1]
+    
+    T = T*save[-1]
+    h = T[1][0]
     return h
 
 
@@ -156,20 +161,20 @@ def click_event(event, x, y, flags, params):
 if __name__=='__main__':
 
     # To get distance if u and v is knownn
-    '''
-    u, v = 0, 0
+    # '''
+    u, v = 674, 414
     calc_distance(u,v)
-    '''
+    # '''
     
     # To find height of camera mount
-
+    '''
     h = get_camera_h()
     print("height: ", h)
-
+    '''
 
     # To get camera coordinates [u, v] from image
     '''
-    img = cv2.imread('../resource/cone_x40cm.png', 1)
+    img = cv2.imread('../resource/test_car_x60cm.png', 1)
   
     # displaying the image
     cv2.imshow('image', img)
